@@ -1,6 +1,6 @@
 {
-  "name": "@keymetrics/deep-metrics",
-  "version": "1.0.0",
+  "name": "deep-metrics",
+  "version": "0.0.1",
   "engines": {
     "node": ">=4"
   },
