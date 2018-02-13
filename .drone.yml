@@ -12,8 +12,7 @@ pipeline:
       - uname -r
       - yarn install 2> /dev/null
       - export PATH=$PATH:./node_modules/.bin/
-      - mocha test/mongoose/mongoose.mocha.js
-      - mocha test/mqtt/mqtt.mocha.js
+      - mocha test/**/*mocha.js
 services:
   mongodb:
     image: tutum/mongodb:2.6
