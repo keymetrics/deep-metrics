@@ -182,19 +182,28 @@ module.exports.monitor = function() {
   this.start();
 };
 
+function onExitListener () {
+  // take the event loop latency methods off the loop
+  if (latencyRunning === true) {
+    clearInterval(latencyCheckLoop);
+    clearInterval(latencyReportLoop);
+  }
+}
+
 module.exports.start = function start() {
-  process.on('exit', function() {
-    // take the event loop latency methods off the loop
-    if (latencyRunning === true) {
-      clearInterval(latencyCheckLoop);
-      clearInterval(latencyReportLoop);
-    }
-  });
+  process.on('exit', onExitListener);
 
   // Start the probes
   probes.forEach(function(probe) {
     probe.start();
   });
+
+  return this;
+};
+
+module.exports.stop = function stop() {
+
+  process.removeListener('exit', onExitListener);
 
   return this;
 };
