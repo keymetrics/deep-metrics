@@ -1,22 +1,28 @@
-pipeline:
-  build:
-    image: node:8
-    environment:
-      - MQQT_URL=mqtt://mosquitto:1883
-      - MONGO_URL=mongodb://mongodb/test
-      - NODE_ENV=test
-    commands:
-      - sleep 10
-      - node -v
-      - yarn -v
-      - uname -r
-      - yarn install 2> /dev/null
-      - export PATH=$PATH:./node_modules/.bin/
-      - mocha test/**/*mocha.js
+---
+kind: pipeline
+name: Tests
+
+steps:
+- name: Tests
+  image: node:8
+  commands:
+  - sleep 10
+  - node -v
+  - yarn -v
+  - uname -r
+  - "yarn install 2> /dev/null"
+  - export PATH=$PATH:./node_modules/.bin/
+  - "mocha test/**/*mocha.js"
+  environment:
+    MONGO_URL: mongodb://mongodb/test
+    MQQT_URL: mqtt://mosquitto:1883
+    NODE_ENV: test
+
 services:
-  mongodb:
-    image: tutum/mongodb:2.6
-    environment:
-      - AUTH=no
-  mosquitto:
-    image: ncarlier/mqtt
+- name: mongodb
+  image: tutum/mongodb:2.6
+  environment:
+    AUTH: no
+
+- name: mosquitto
+  image: ncarlier/mqtt
